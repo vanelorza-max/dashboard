@@ -138,6 +138,19 @@ const REMOVED_ACCOUNTS = [
 // Correcciones/cierres verificados: se aplican sobre el storage en cada carga
 // (sobreescriben si existe el registro, lo agregan si no existe)
 const CORRECTIONS = [
+  // 2026-07-14 (martes) — $50K en NETO, Bulenox en BRUTO
+  {group:'pilar', accId:'002',  date:'2026-07-14', pnl:-81.00},
+  {group:'pilar', accId:'003',  date:'2026-07-14', pnl:-72.00},
+  {group:'pilar', accId:'004',  date:'2026-07-14', pnl:-82.00},
+  {group:'pilar', accId:'005',  date:'2026-07-14', pnl:-81.00},
+  {group:'pilar', accId:'006',  date:'2026-07-14', pnl:-79.00},
+  {group:'pilar', accId:'bx71', date:'2026-07-14', pnl:-58.50},
+  {group:'raul',  accId:'tradeify1', date:'2026-07-14', pnl:-77.60},
+  {group:'raul',  accId:'bx64', date:'2026-07-14', pnl:-75.00},
+  {group:'raul',  accId:'bx65', date:'2026-07-14', pnl:-73.00},
+  {group:'raul',  accId:'bx66', date:'2026-07-14', pnl:-76.00},
+  {group:'raul',  accId:'bx67', date:'2026-07-14', pnl:-78.00},
+  {group:'raul',  accId:'bx68', date:'2026-07-14', pnl:-74.50},
   // 2026-07-13 (lunes) — $50K en NETO, Bulenox en BRUTO
   {group:'pilar', accId:'002',  date:'2026-07-13', pnl:52.00},
   {group:'pilar', accId:'003',  date:'2026-07-13', pnl:52.00},
@@ -482,7 +495,7 @@ function render(){
     }
   }
 
-  html += '<footer>Dashboard diario de cuentas · Última actualización: 13 de julio de 2026</footer>';
+  html += '<footer>Dashboard diario de cuentas · Última actualización: 14 de julio de 2026</footer>';
   html += '</div>';
   app.innerHTML = html;
 
