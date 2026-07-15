@@ -79,21 +79,25 @@ const ACCOUNTS = {
     {id:'004', label:'LucidFlex 004', balance0:51189.50, target:53000, mll:49310, start:50000},
     {id:'005', label:'LucidFlex 005', balance0:51520.50, target:53001, mll:49744, start:50000},
     {id:'006', label:'LucidFlex 006', balance0:50101.50, target:53000, mll:48383, start:50000},
-    {id:'bx71', label:'Bulenox -71', balance0:25000.00, target:26500, mll:24232, start:25000},
+    {id:'bx74', label:'Bulenox -74', balance0:25000.00, target:26500, mll:24145, start:25000},
   ],
   raul: [
-    {id:'tradeify1', label:'Tradeify #1', balance0:50000.00, target:53000, mll:48138.40, start:50000},
-    {id:'bx64', label:'Bulenox -64', balance0:25000.00, target:26500, mll:23500, start:25000},
-    {id:'bx65', label:'Bulenox -65', balance0:25000.00, target:26500, mll:23500, start:25000},
-    {id:'bx66', label:'Bulenox -66', balance0:25000.00, target:26500, mll:23570, start:25000},
-    {id:'bx67', label:'Bulenox -67', balance0:25000.00, target:26500, mll:23500, start:25000},
-    {id:'bx68', label:'Bulenox -68', balance0:25000.00, target:26500, mll:23708.50, start:25000},
+    {id:'tradeify1', label:'Tradeify Select', balance0:50000.00, target:53000, mll:48138.40, start:50000},
+    {id:'bx64', label:'Bulenox -64', balance0:25000.00, target:26500, mll:23542.78, start:25000},
+    {id:'bx65', label:'Bulenox -65', balance0:25000.00, target:26500, mll:23542.78, start:25000},
+    {id:'bx66', label:'Bulenox -66', balance0:25000.00, target:26500, mll:23589.78, start:25000},
+    {id:'bx67', label:'Bulenox -67', balance0:25000.00, target:26500, mll:23507.78, start:25000},
+    {id:'bx68', label:'Bulenox -68', balance0:25000.00, target:26500, mll:23755.85, start:25000},
   ]
 };
 // mll = Minimum Loss Limit (nivel de liquidación). Colchón de drawdown = balance actual - mll.
 // REGLA DEL COLCHÓN: MLL = máximo histórico del balance - colchón máximo ($1.500 en Bulenox $25K, $2.000 en cuentas $50K).
 // Si la cuenta sube (nuevo máximo), el MLL sube y el colchón se mantiene en su tope. Si la cuenta baja, el MLL no baja y el colchón se reduce.
-// balance0 = balance al cierre de junio 2026. Los P&L diarios de julio en adelante se registran como entradas.
+// MLL de las Bulenox de Raúl actualizados el 15-jul-2026 con los valores oficiales de los reportes de Bulenox (14-jul).
+// Bulenox -74: cuenta nueva agregada el 15-jul-2026 (reemplaza a la -71). Arranca en 25.000 y su +$645,00
+// del 15-jul está registrado como P&L del día (así aparece en el P&L del mes). Balance actual: $25.645, faltan $855 para el TP.
+// Su MLL es estimado (trailing EOD: 25.645 - 1.500 = 24.145); verificar con el reporte oficial y corregir si difiere.
+// balance0 = balance al cierre de junio 2026 (o al alta de la cuenta). Los P&L diarios se registran como entradas.
 
 // Datos precargados: días 1-3 de julio 2026 (validados con capturas de la plataforma)
 const SEED_ENTRIES = [
@@ -133,18 +137,31 @@ const STORE_KEY = 'daily-entries-v1';
 const REMOVED_ACCOUNTS = [
   {group:'pilar', accId:'bx70'},  // Bulenox -70 (eliminada)
   {group:'raul',  accId:'bx69'},  // Bulenox -69 (eliminada 8 jul 2026)
+  {group:'pilar', accId:'bx71'},  // Bulenox -71/-73 (eliminada 15 jul 2026, reemplazada por la -74)
 ];
 
 // Correcciones/cierres verificados: se aplican sobre el storage en cada carga
 // (sobreescriben si existe el registro, lo agregan si no existe)
 const CORRECTIONS = [
+  // 2026-07-15 (miércoles) — $50K en NETO, Bulenox en BRUTO — TODAS ROJAS
+  {group:'pilar', accId:'002',  date:'2026-07-15', pnl:-99.00},
+  {group:'pilar', accId:'003',  date:'2026-07-15', pnl:-65.00},
+  {group:'pilar', accId:'004',  date:'2026-07-15', pnl:-69.00},
+  {group:'pilar', accId:'005',  date:'2026-07-15', pnl:-67.00},
+  {group:'pilar', accId:'006',  date:'2026-07-15', pnl:-132.00},
+  {group:'pilar', accId:'bx74', date:'2026-07-15', pnl:645.00, cal:false},  // Bulenox -74 (cuenta nueva; suma en totales pero NO se muestra en el calendario)
+  {group:'raul',  accId:'bx64', date:'2026-07-15', pnl:-64.00},
+  {group:'raul',  accId:'bx65', date:'2026-07-15', pnl:-63.00},
+  {group:'raul',  accId:'bx66', date:'2026-07-15', pnl:-64.00},
+  {group:'raul',  accId:'bx67', date:'2026-07-15', pnl:-99.50},
+  {group:'raul',  accId:'bx68', date:'2026-07-15', pnl:-97.00},
+  {group:'raul',  accId:'tradeify1', date:'2026-07-15', pnl:-67.60},
   // 2026-07-14 (martes) — $50K en NETO, Bulenox en BRUTO
   {group:'pilar', accId:'002',  date:'2026-07-14', pnl:-81.00},
   {group:'pilar', accId:'003',  date:'2026-07-14', pnl:-72.00},
   {group:'pilar', accId:'004',  date:'2026-07-14', pnl:-82.00},
   {group:'pilar', accId:'005',  date:'2026-07-14', pnl:-81.00},
   {group:'pilar', accId:'006',  date:'2026-07-14', pnl:-79.00},
-  {group:'pilar', accId:'bx71', date:'2026-07-14', pnl:-58.50},
   {group:'raul',  accId:'tradeify1', date:'2026-07-14', pnl:-77.60},
   {group:'raul',  accId:'bx64', date:'2026-07-14', pnl:-75.00},
   {group:'raul',  accId:'bx65', date:'2026-07-14', pnl:-73.00},
@@ -157,7 +174,6 @@ const CORRECTIONS = [
   {group:'pilar', accId:'004',  date:'2026-07-13', pnl:53.00},
   {group:'pilar', accId:'005',  date:'2026-07-13', pnl:52.00},
   {group:'pilar', accId:'006',  date:'2026-07-13', pnl:53.00},
-  {group:'pilar', accId:'bx71', date:'2026-07-13', pnl:60.00},
   {group:'raul',  accId:'tradeify1', date:'2026-07-13', pnl:50.20},
   {group:'raul',  accId:'bx64', date:'2026-07-13', pnl:54.00},
   {group:'raul',  accId:'bx65', date:'2026-07-13', pnl:54.00},
@@ -170,7 +186,6 @@ const CORRECTIONS = [
   {group:'pilar', accId:'004',  date:'2026-07-10', pnl:30.00},
   {group:'pilar', accId:'005',  date:'2026-07-10', pnl:21.00},
   {group:'pilar', accId:'006',  date:'2026-07-10', pnl:20.50},
-  {group:'pilar', accId:'bx71', date:'2026-07-10', pnl:77.00},
   {group:'raul',  accId:'tradeify1', date:'2026-07-10', pnl:16.70},
   {group:'raul',  accId:'bx64', date:'2026-07-10', pnl:38.00},
   {group:'raul',  accId:'bx65', date:'2026-07-10', pnl:52.50},
@@ -183,7 +198,6 @@ const CORRECTIONS = [
   {group:'pilar', accId:'004',  date:'2026-07-09', pnl:-63.00},
   {group:'pilar', accId:'005',  date:'2026-07-09', pnl:-63.00},
   {group:'pilar', accId:'006',  date:'2026-07-09', pnl:-63.00},
-  {group:'pilar', accId:'bx71', date:'2026-07-09', pnl:156.00},
   {group:'raul',  accId:'tradeify1', date:'2026-07-09', pnl:-65.60},
   {group:'raul',  accId:'bx64', date:'2026-07-09', pnl:-57.00},
   {group:'raul',  accId:'bx65', date:'2026-07-09', pnl:-58.00},
@@ -196,14 +210,12 @@ const CORRECTIONS = [
   {group:'pilar', accId:'004',  date:'2026-07-06', pnl:-2.00},
   {group:'pilar', accId:'005',  date:'2026-07-06', pnl:-2.00},
   {group:'pilar', accId:'006',  date:'2026-07-06', pnl:-2.00},
-  {group:'pilar', accId:'bx71', date:'2026-07-06', pnl:453.50},
   // 2026-07-07 (martes) — Pili
   {group:'pilar', accId:'002',  date:'2026-07-07', pnl:65.50},
   {group:'pilar', accId:'003',  date:'2026-07-07', pnl:136.00},
   {group:'pilar', accId:'004',  date:'2026-07-07', pnl:87.00},
   {group:'pilar', accId:'005',  date:'2026-07-07', pnl:70.00},
   {group:'pilar', accId:'006',  date:'2026-07-07', pnl:154.00},
-  {group:'pilar', accId:'bx71', date:'2026-07-07', pnl:138.50},
   // 2026-07-06 (lunes) — Raúl
   {group:'raul',  accId:'tradeify1', date:'2026-07-06', pnl:73.20},
   {group:'raul',  accId:'bx66',      date:'2026-07-06', pnl:70.00},
@@ -215,7 +227,6 @@ const CORRECTIONS = [
   {group:'pilar', accId:'004',  date:'2026-07-08', pnl:-212.00},
   {group:'pilar', accId:'005',  date:'2026-07-08', pnl:-212.00},
   {group:'pilar', accId:'006',  date:'2026-07-08', pnl:-212.00},
-  {group:'pilar', accId:'bx71', date:'2026-07-08', pnl:-153.00},
   {group:'raul',  accId:'bx64', date:'2026-07-08', pnl:-207.00},
   {group:'raul',  accId:'bx65', date:'2026-07-08', pnl:-208.00},
   {group:'raul',  accId:'bx66', date:'2026-07-08', pnl:-208.00},
@@ -234,7 +245,7 @@ function applyCorrections(entries){
     if(idx >= 0){
       if(entries[idx].pnl !== c.pnl){ entries[idx].pnl = c.pnl; changed = true; }
     } else {
-      entries.push({group:c.group, accId:c.accId, date:c.date, pnl:c.pnl});
+      entries.push({group:c.group, accId:c.accId, date:c.date, pnl:c.pnl, cal:c.cal});
       changed = true;
     }
   }
@@ -288,6 +299,7 @@ function renderCalendar(groupKeys, mk){
   // Mapa fecha -> {accKey: pnl}
   const byDate = {};
   for(const e of state.entries){
+    if(e.cal===false) continue; // registros ocultos del calendario (cuentan en totales)
     if(monthKey(e.date)!==mk) continue;
     if(!groupKeys.includes(e.group)) continue;
     if(!byDate[e.date]) byDate[e.date] = {};
@@ -495,7 +507,7 @@ function render(){
     }
   }
 
-  html += '<footer>Dashboard diario de cuentas · Última actualización: 14 de julio de 2026</footer>';
+  html += '<footer>Dashboard diario de cuentas · Última actualización: 15 de julio de 2026</footer>';
   html += '</div>';
   app.innerHTML = html;
 
