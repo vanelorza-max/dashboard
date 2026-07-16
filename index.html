@@ -79,7 +79,7 @@ const ACCOUNTS = {
     {id:'004', label:'LucidFlex 004', balance0:51189.50, target:53000, mll:49310, start:50000},
     {id:'005', label:'LucidFlex 005', balance0:51520.50, target:53001, mll:49744, start:50000},
     {id:'006', label:'LucidFlex 006', balance0:50101.50, target:53000, mll:48383, start:50000},
-    {id:'bx74', label:'Bulenox -74', balance0:25000.00, target:26500, mll:24145, start:25000},
+    {id:'bx74', label:'Bulenox -74', balance0:25000.00, target:26500, mll:24257.50, start:25000},
   ],
   raul: [
     {id:'tradeify1', label:'Tradeify Select', balance0:50000.00, target:53000, mll:48138.40, start:50000},
@@ -96,7 +96,7 @@ const ACCOUNTS = {
 // MLL de las Bulenox de Raúl actualizados el 15-jul-2026 con los valores oficiales de los reportes de Bulenox (14-jul).
 // Bulenox -74: cuenta nueva agregada el 15-jul-2026 (reemplaza a la -71). Arranca en 25.000 y su +$645,00
 // del 15-jul está registrado como P&L del día (así aparece en el P&L del mes). Balance actual: $25.645, faltan $855 para el TP.
-// Su MLL es estimado (trailing EOD: 25.645 - 1.500 = 24.145); verificar con el reporte oficial y corregir si difiere.
+// Su MLL es estimado (trailing EOD 16-jul: 25.757,50 - 1.500 = 24.257,50); verificar con el reporte oficial y corregir si difiere.
 // balance0 = balance al cierre de junio 2026 (o al alta de la cuenta). Los P&L diarios se registran como entradas.
 
 // Datos precargados: días 1-3 de julio 2026 (validados con capturas de la plataforma)
@@ -143,6 +143,19 @@ const REMOVED_ACCOUNTS = [
 // Correcciones/cierres verificados: se aplican sobre el storage en cada carga
 // (sobreescriben si existe el registro, lo agregan si no existe)
 const CORRECTIONS = [
+  // 2026-07-16 (jueves) — $50K en NETO, Bulenox en BRUTO — TODAS VERDES
+  {group:'pilar', accId:'002',  date:'2026-07-16', pnl:111.00},
+  {group:'pilar', accId:'003',  date:'2026-07-16', pnl:73.00},
+  {group:'pilar', accId:'004',  date:'2026-07-16', pnl:73.00},
+  {group:'pilar', accId:'005',  date:'2026-07-16', pnl:73.00},
+  {group:'pilar', accId:'006',  date:'2026-07-16', pnl:146.00},
+  {group:'pilar', accId:'bx74', date:'2026-07-16', pnl:112.50},
+  {group:'raul',  accId:'tradeify1', date:'2026-07-16', pnl:72.20},
+  {group:'raul',  accId:'bx64', date:'2026-07-16', pnl:74.50},
+  {group:'raul',  accId:'bx65', date:'2026-07-16', pnl:74.50},
+  {group:'raul',  accId:'bx66', date:'2026-07-16', pnl:74.00},
+  {group:'raul',  accId:'bx67', date:'2026-07-16', pnl:111.00},
+  {group:'raul',  accId:'bx68', date:'2026-07-16', pnl:111.00},
   // 2026-07-15 (miércoles) — $50K en NETO, Bulenox en BRUTO — TODAS ROJAS
   {group:'pilar', accId:'002',  date:'2026-07-15', pnl:-99.00},
   {group:'pilar', accId:'003',  date:'2026-07-15', pnl:-65.00},
